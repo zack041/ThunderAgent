@@ -63,7 +63,10 @@ class BackendState:
     @property
     def completions_url(self) -> str:
         """Chat completions API endpoint."""
-        return f"{self.url}/v1/chat/completions"
+        base = self.url.rstrip("/")
+        if not base.endswith("/v1"):
+            base = f"{base}/v1"
+        return f"{base}/chat/completions"
     
     # Delegate to metrics_client
     @property

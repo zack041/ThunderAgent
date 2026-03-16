@@ -201,7 +201,7 @@ async def list_models():
         return JSONResponse({"object": "list", "data": []})
     
     backend_url = next(iter(router.backends.keys()))
-    return await router.proxy_get(backend_url, "/v1/models")
+    return await router.proxy_get(backend_url, "/models")
 
 
 @app.get("/metrics")
