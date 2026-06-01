@@ -15,6 +15,12 @@ Fast, simple and program-aware agentic inference system.
 
 ---
 
+## News
+
+- **[2026-06-01]** As part of [Dynamo 2.0](https://github.com/ai-dynamo/dynamo/issues/9208), ThunderAgent is integrated into **NVIDIA Dynamo** ([PR #9448](https://github.com/ai-dynamo/dynamo/pull/9448)) — with the proposed **program abstraction** operating as a first-class scheduling unit ([PR #8789](https://github.com/ai-dynamo/dynamo/pull/8789)).
+- **[2026-05-14]** ThunderAgent is integrated into [**SkyRL**](https://github.com/NovaSky-AI/SkyRL) for agentic RL training, with an example training recipe that accelerates SWE Agent rollout by 3x on 40 H100 GPUs ([PR #1645](https://github.com/NovaSky-AI/SkyRL/pull/1645)).
+- **[2026-04-30]** ThunderAgent is accepted to **ICML 2026** as a **Spotlight** (top 2.2%)! ([poster](https://icml.cc/virtual/2026/poster/62040))
+
 ## About
 ThunderAgent is a fast and easy-to-use library for agentic inference and rollout.
 
