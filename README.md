@@ -8,7 +8,7 @@ Fast, simple and program-aware agentic inference system.
 </h3>
 
 <p align="center">
-| <a href="https://deepwiki.com/HaoKang-Timmy/ThunderAgent"><b>Wiki</b></a> | <a href="https://thunderagent.ai"><b>Blog</b></a> | <a href="https://arxiv.org/pdf/2602.13692"><b>Paper</b></a> |
+| <a href="https://deepwiki.com/ThunderAgent-org/ThunderAgent"><b>Wiki</b></a> | <a href="https://thunderagent.ai"><b>Blog</b></a> | <a href="https://arxiv.org/pdf/2602.13692"><b>Paper</b></a> |
 </p>
 
 
@@ -63,7 +63,7 @@ https://github.com/user-attachments/assets/751d8fc3-a9d8-482c-a90c-6fe29e53008f
 Install ThunderAgent from source:
 
 ```bash
-git clone git@github.com:HaoKang-Timmy/ThunderAgent.git
+git clone https://github.com/ThunderAgent-org/ThunderAgent.git
 cd ThunderAgent
 pip install -e .
 ```
@@ -110,7 +110,7 @@ If you use ThunderAgent for your research, please cite our [paper](https://arxiv
 ```bibtex
 @misc{kang2026thunderagentsimplefastprogramaware,
       title={ThunderAgent: A Simple, Fast and Program-Aware Agentic Inference System}, 
-      author={Hao Kang and Ziyang Li and Xinyu Yang and Weili Xu and Yinfang Chen and Junxiong Wang and Beidi Chen and Tushar Krishna and Chenfeng Xu and Simran Arora},
+      author={Hao Kang and Ziyang Li and Weili Xu and Xinyu Yang and Yinfang Chen and Junxiong Wang and Beidi Chen and Tushar Krishna and Chenfeng Xu and Simran Arora},
       year={2026},
       eprint={2602.13692},
       archivePrefix={arXiv},
@@ -123,4 +123,4 @@ If you use ThunderAgent for your research, please cite our [paper](https://arxiv
 For enterprises interested in adopting or deploying ThunderAgent at scale, including technical consulting, sponsorship opportunities, or partnership inquiries, please contact us at [hkang342@gatech.edu](mailto:hkang342@gatech.edu).
 
 ## License
-This repository is available under the MIT license. See the [LICENSE.md](https://github.com/ThunderAgent-org/ThunderAgent/blob/main/LICENSE.md) file for details.
+This repository is available under the MIT license. See the [LICENSE.md](./LICENSE.md) file for details.
