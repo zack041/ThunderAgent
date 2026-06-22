@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import concurrent.futures
+import os
 import random
 import re
 import subprocess
@@ -32,6 +33,8 @@ def get_swebench_docker_image_name(instance: dict) -> str:
     image_name = instance.get("image_name", None)
     if image_name is None:
         iid = instance["instance_id"]
+        if os.getenv("MSWEA_SWEBENCH_IMAGE_REGISTRY") == "epoch":
+            return f"ghcr.io/epoch-research/swe-bench.eval.x86_64.{iid}:latest".lower()
         id_docker_compatible = iid.replace("__", "_1776_")
         image_name = f"docker.io/swebench/sweb.eval.x86_64.{id_docker_compatible}:latest".lower()
     return image_name
@@ -139,4 +142,3 @@ def main(
 
 if __name__ == "__main__":
     app()
-

@@ -5,6 +5,7 @@
 
 import concurrent.futures
 import json
+import os
 import random
 import re
 import subprocess
@@ -99,8 +100,10 @@ def get_swebench_docker_image_name(instance: dict) -> str:
     """Get the image name for a SWEBench instance."""
     image_name = instance.get("image_name", None)
     if image_name is None:
-        # Docker doesn't allow double underscore, so we replace them with a magic token
         iid = instance["instance_id"]
+        if os.getenv("MSWEA_SWEBENCH_IMAGE_REGISTRY") == "epoch":
+            return f"ghcr.io/epoch-research/swe-bench.eval.x86_64.{iid}:latest".lower()
+        # Docker doesn't allow double underscore, so we replace them with a magic token
         id_docker_compatible = iid.replace("__", "_1776_")
         image_name = f"docker.io/swebench/sweb.eval.x86_64.{id_docker_compatible}:latest".lower()
     return image_name

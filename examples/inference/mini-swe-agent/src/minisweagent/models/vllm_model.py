@@ -75,6 +75,7 @@ class VllmModel:
             "top_p",
             "n",
             "stream",
+            "stream_options",
             "stop",
             "max_tokens",
             "max_completion_tokens",
@@ -221,6 +222,7 @@ class VllmModel:
         # Force streaming so we can observe first token latency.
         kwargs = dict(kwargs)
         kwargs["stream"] = True
+        kwargs["stream_options"] = {"include_usage": True}
 
         response = self._query(messages, **kwargs)
 
@@ -233,6 +235,7 @@ class VllmModel:
         first_token_ts: float | None = None
         full_response = None
         content_chunks: list[str] = []
+        usage: dict[str, Any] = {}
 
         for chunk in response:
             if chunk.choices and len(chunk.choices) > 0:
@@ -241,6 +244,9 @@ class VllmModel:
                     if first_token_ts is None:
                         first_token_ts = time.time()
                     content_chunks.append(delta.content)
+            if getattr(chunk, "usage", None) is not None:
+                usage_obj = chunk.usage
+                usage = usage_obj.model_dump() if hasattr(usage_obj, "model_dump") else dict(usage_obj)
             full_response = chunk
 
         last_token_ts = time.time()
@@ -259,6 +265,10 @@ class VllmModel:
             {
                 "first_token_ts": first_token_ts,
                 "last_token_ts": last_token_ts,
+                "prompt_tokens": usage.get("prompt_tokens"),
+                "completion_tokens": usage.get("completion_tokens"),
+                "total_tokens": usage.get("total_tokens"),
+                "cached_tokens": (usage.get("prompt_tokens_details") or {}).get("cached_tokens"),
             },
         )
 

@@ -1,5 +1,6 @@
 """ThunderAgent entry point for `python -m ThunderAgent`."""
 import argparse
+import importlib
 import sys
 
 
@@ -71,8 +72,14 @@ def main() -> int:
         print("Error: uvicorn is required. Install with: pip install uvicorn", file=sys.stderr)
         return 1
 
-    # Import app after config is set
-    from .app import app
+    # ``python -m ThunderAgent`` imports the package ``__init__`` before this
+    # module. Since ``__init__`` exposes helpers from ``app``, that can create
+    # the module-level app with the default config before CLI parsing. Reload
+    # it after setting the CLI config so the standalone server uses the
+    # requested backend/profile settings.
+    app_module = importlib.import_module(".app", __package__)
+    app_module = importlib.reload(app_module)
+    app = app_module.app
 
     uvicorn.run(app, host=args.host, port=args.port, log_level=args.log_level)
     return 0

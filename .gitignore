@@ -3,3 +3,8 @@ openhands_swebench/OpenHands/outputs/
 openhands_swebench/system_monitor.csv
 *.pyc
 .venv
+
+# Generated experiment data and runtime artifacts.
+/experiment_results/
+/logs/
+/swebench_output*/

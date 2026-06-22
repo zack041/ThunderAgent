@@ -190,11 +190,12 @@ class DefaultAgent:
         # If model returned streaming timing info, normalize it.
         query_first_token_ts: float | None = None
         query_last_token_ts: float | None = None
+        query_timing: dict = {}
 
         if isinstance(response, tuple) and len(response) == 2 and isinstance(response[0], dict) and isinstance(response[1], dict):
-            response, timing = response
-            query_first_token_ts = timing.get("first_token_ts")
-            query_last_token_ts = timing.get("last_token_ts")
+            response, query_timing = response
+            query_first_token_ts = query_timing.get("first_token_ts")
+            query_last_token_ts = query_timing.get("last_token_ts")
 
         if query_last_token_ts is None:
             query_last_token_ts = time.time()
@@ -208,6 +209,10 @@ class DefaultAgent:
                 "prefill_s": max(0.0, query_first_token_ts - query_start_ts),
                 "decode_s": max(0.0, query_last_token_ts - query_first_token_ts),
                 "total_s": max(0.0, query_last_token_ts - query_start_ts),
+                "prompt_tokens": query_timing.get("prompt_tokens"),
+                "completion_tokens": query_timing.get("completion_tokens"),
+                "total_tokens": query_timing.get("total_tokens"),
+                "cached_tokens": query_timing.get("cached_tokens"),
             })
 
         self.add_message("assistant", **response)

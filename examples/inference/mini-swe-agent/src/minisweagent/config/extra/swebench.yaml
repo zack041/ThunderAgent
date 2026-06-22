@@ -216,6 +216,7 @@ environment:
   cwd: "/testbed"
   timeout: 60
   pull_timeout: 600
+  container_timeout: "24h"
   env:
     PAGER: cat
     MANPAGER: cat
