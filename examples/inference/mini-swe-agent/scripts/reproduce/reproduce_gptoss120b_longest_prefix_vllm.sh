@@ -28,11 +28,11 @@ METRICS_INTERVAL_S="5"
 # SWE-bench run
 SWEBENCH_SUBSET="lite"
 SWEBENCH_SPLIT="test"
-SWEBENCH_WORKERS="128"
-SWEBENCH_OUTPUT="./swebench_output_gptoss120b_longest_prefix_vllm"
+SWEBENCH_WORKERS="${SWEBENCH_WORKERS:-128}"
+SWEBENCH_OUTPUT="${SWEBENCH_OUTPUT:-./swebench_output_gptoss120b_longest_prefix_vllm}"
 
 # Keep artifacts separate from FCFS vLLM and ThunderAgent runs.
-LOG_DIR="./logs/gptoss120b_longest_prefix_vllm"
+LOG_DIR="${LOG_DIR:-./logs/gptoss120b_longest_prefix_vllm}"
 METRICS_DIR="${LOG_DIR}/metrics"
 
 # =========================
@@ -136,6 +136,7 @@ snapshot_download(
     local_dir=os.environ["MODEL_DIR"],
     local_dir_use_symlinks=False,
     resume_download=True,
+    ignore_patterns=["metal/*", "original/*"],
 )
 PY
   log_info "Model download completed."
@@ -167,8 +168,8 @@ start_vllm() {
   log_info "Starting vLLM with longest-prefix-hit scheduling on port ${VLLM_PORT}"
   log_info "vLLM log: ${VLLM_LOG}"
   PYTHONPATH="${SCHEDULER_DIR}${PYTHONPATH:+:${PYTHONPATH}}" \
-    nohup vllm serve "${MODEL_REPO}" \
-      --download-dir "${MODEL_DIR}" \
+    nohup vllm serve "${MODEL_DIR}" \
+      --served-model-name "${MODEL_REPO}" \
       --tensor-parallel-size "${VLLM_TP_SIZE}" \
       --enable-prefix-caching \
       --scheduling-policy fcfs \

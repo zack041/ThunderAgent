@@ -24,11 +24,11 @@ HEALTH_TIMEOUT_S="1800"
 # SWE-bench run
 SWEBENCH_SUBSET="lite"
 SWEBENCH_SPLIT="test"
-SWEBENCH_WORKERS="128"
-SWEBENCH_OUTPUT="./swebench_output"
+SWEBENCH_WORKERS="${SWEBENCH_WORKERS:-128}"
+SWEBENCH_OUTPUT="${SWEBENCH_OUTPUT:-./swebench_output}"
 
 # All logs are stored under repo-root ./logs.
-LOG_DIR="./logs"
+LOG_DIR="${LOG_DIR:-./logs}"
 ROUTER_DIR="${LOG_DIR}/router_metrics"
 
 # =========================
@@ -120,6 +120,7 @@ snapshot_download(
     local_dir=local_dir,
     local_dir_use_symlinks=False,
     resume_download=True,
+    ignore_patterns=["metal/*", "original/*"],
 )
 PY
   log_info "Model download completed."
@@ -127,8 +128,8 @@ PY
 
 start_vllm() {
   log_info "Starting vLLM on port ${VLLM_PORT} (log: ${VLLM_LOG})"
-  nohup vllm serve "${MODEL_REPO}" \
-    --download-dir "${MODEL_DIR}" \
+  nohup vllm serve "${MODEL_DIR}" \
+    --served-model-name "${MODEL_REPO}" \
     --tensor-parallel-size "${VLLM_TP_SIZE}" \
     --port "${VLLM_PORT}" \
     >"${VLLM_LOG}" 2>&1 &

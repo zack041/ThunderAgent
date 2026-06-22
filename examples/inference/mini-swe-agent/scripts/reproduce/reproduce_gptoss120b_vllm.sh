@@ -28,11 +28,11 @@ METRICS_INTERVAL_S="5"
 # SWE-bench run
 SWEBENCH_SUBSET="lite"
 SWEBENCH_SPLIT="test"
-SWEBENCH_WORKERS="128"
-SWEBENCH_OUTPUT="./swebench_output_gptoss120b_vllm"
+SWEBENCH_WORKERS="${SWEBENCH_WORKERS:-128}"
+SWEBENCH_OUTPUT="${SWEBENCH_OUTPUT:-./swebench_output_gptoss120b_vllm}"
 
 # Keep baseline artifacts separate from the ThunderAgent run.
-LOG_DIR="./logs/gptoss120b_vllm_baseline"
+LOG_DIR="${LOG_DIR:-./logs/gptoss120b_vllm_baseline}"
 METRICS_DIR="${LOG_DIR}/metrics"
 
 # =========================
@@ -124,6 +124,7 @@ snapshot_download(
     local_dir=os.environ["MODEL_DIR"],
     local_dir_use_symlinks=False,
     resume_download=True,
+    ignore_patterns=["metal/*", "original/*"],
 )
 PY
   log_info "Model download completed."
@@ -153,8 +154,8 @@ PY
 
 start_vllm() {
   log_info "Starting vanilla vLLM on port ${VLLM_PORT} (log: ${VLLM_LOG})"
-  nohup vllm serve "${MODEL_REPO}" \
-    --download-dir "${MODEL_DIR}" \
+  nohup vllm serve "${MODEL_DIR}" \
+    --served-model-name "${MODEL_REPO}" \
     --tensor-parallel-size "${VLLM_TP_SIZE}" \
     --port "${VLLM_PORT}" \
     >"${VLLM_LOG}" 2>&1 &
