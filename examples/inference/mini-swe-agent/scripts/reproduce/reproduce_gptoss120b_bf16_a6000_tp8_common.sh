@@ -33,6 +33,7 @@ VLLM_GPU_MEMORY_UTILIZATION="${VLLM_GPU_MEMORY_UTILIZATION:-0.90}"
 VLLM_MAX_MODEL_LEN="${VLLM_MAX_MODEL_LEN:-131072}"
 # Keep the same backend KV headroom for all three policies.
 VLLM_WATERMARK="${VLLM_WATERMARK:-0.05}"
+LONGEST_PREFIX_DECODE_RESERVE_TOKENS="${LONGEST_PREFIX_DECODE_RESERVE_TOKENS:-1024}"
 HEALTH_TIMEOUT_S="${HEALTH_TIMEOUT_S:-3600}"
 METRICS_INTERVAL_S="${METRICS_INTERVAL_S:-5}"
 
@@ -176,7 +177,10 @@ start_vllm() {
   if [[ "${POLICY}" == "longest_prefix_vllm" ]]; then
     [[ -f "${SCHEDULER_FILE}" ]] || die "Scheduler not found: ${SCHEDULER_FILE}"
     SCHEDULER_DIR="$(cd "${SCHEDULER_DIR}" && pwd)"
-    scheduler_env=("PYTHONPATH=${SCHEDULER_DIR}${PYTHONPATH:+:${PYTHONPATH}}")
+    scheduler_env=(
+      "PYTHONPATH=${SCHEDULER_DIR}${PYTHONPATH:+:${PYTHONPATH}}"
+      "VLLM_LONGEST_PREFIX_DECODE_RESERVE_TOKENS=${LONGEST_PREFIX_DECODE_RESERVE_TOKENS}"
+    )
     scheduler_args=(
       --scheduler-cls "${SCHEDULER_MODULE}"
     )
